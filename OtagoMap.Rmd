@@ -1,0 +1,53 @@
+---
+title: "Otago tourist map"
+author: "EPermina"
+date: "20 March 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Libraries used
+
+```{r libraries, echo=FALSE}
+if(!require(dplyr)){
+  install.packages("dplyr") }
+  if(!require(leaflet)){
+  install.packages("leaflet") }
+library(leaflet)
+    library(dplyr)
+```
+
+# this is North campus of Otago University, the oldest uni in New Zealand
+
+out of decency, I have marked by popup the St Margarets's college, but truth be told after ours you are most likely to find us in Eureka, (-45.867345, 170.513252).
+
+```{r Otago}
+otagoIcon<-makeIcon(
+  iconUrl="https://raw.githubusercontent.com/elizabethpermina/DataProductsCoursera1/master/Otago-uni-logo.png",
+  iconWidth = 32*216/230, iconHeight = 31,
+  iconAnchorX = 32*216/230/2, iconAnchorY = 16
+)
+
+content1 <- paste(sep = "<br/>",
+  "<b><a href='https://stmargarets.college'>St. Margaret's Colledge</a></b>",
+  "333 Leith Street",
+  "Dunedin 9016, New Zealand"
+)
+
+
+otagoLatsLongs <- data.frame( 
+lats= c(-45.864754,-45.864533, -45.868070),
+lngs= c(170.515969, 170.512831, 170.514678))
+
+otago_map<-leaflet() %>% addTiles() %>%
+  addMarkers(lat=otagoLatsLongs$lats, lng=otagoLatsLongs$lngs, icon=otagoIcon) %>%
+      addPopups(lat=-45.864688, lng= 170.515969, content1, 
+               options = popupOptions(closeButton = FALSE)
+  )
+
+otago_map
+
+```
